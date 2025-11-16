@@ -8,7 +8,7 @@ spec:
     app: flask-app
   ports:
     - protocol: TCP
-      port: 80          # Cluster-internal service port
-      targetPort: 5000  # Container port
-      nodePort: 30008   # NodePort for external access (must be free)
+      port: 80
+      targetPort: 5000
+      nodePort: 30008  # Ensure this is free in Minikube
   type: NodePort
