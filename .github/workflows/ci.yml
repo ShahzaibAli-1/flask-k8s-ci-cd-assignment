@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ develop, main ]
+    branches: [ develop, main, feature/* ]
   pull_request:
     branches: [ develop, main ]
 
@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -21,8 +22,25 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+        pip install pytest flake8
     
-    - name: Run tests
+    - name: Run Flake8 linting
       run: |
-        # Add test commands here when tests are available
-        echo "Tests would run here"
+        # Check code style with max line length of 90 characters
+        flake8 --max-line-length=90 app.py utils.py
+    
+    - name: Run unit tests with pytest
+      run: |
+        python -m pytest tests/ -v
+    
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: |
+        docker build -t flask-app:latest .
