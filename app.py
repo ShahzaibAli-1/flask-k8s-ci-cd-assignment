@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -10,7 +10,14 @@ def hello_world():
 
 @app.route('/health')
 def health_check():
-    return {'status': 'healthy', 'message': 'Service is running'}
+    """Health check endpoint."""
+    return jsonify({'status': 'healthy', 'message': 'Service is running'})
+
+
+@app.route('/ready')
+def readiness_check():
+    """Readiness check endpoint."""
+    return jsonify({'status': 'ready', 'message': 'Service is ready to accept traffic'})
 
 
 if __name__ == '__main__':
