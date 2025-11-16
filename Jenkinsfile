@@ -6,13 +6,13 @@ pipeline {
         K8S_NAMESPACE = 'default'
     }
     
-    stages {
         stage('Checkout Code') {
             steps {
-                checkout scm
+                git branch: 'feature/jenkins-k8s-pipeline', url: 'https://github.com/ShahzaibAli-1/flask-k8s-ci-cd-assignment.git'
                 echo '✅ Code checked out successfully from GitHub'
             }
         }
+
         
         stage('Build Docker Image') {
             steps {
